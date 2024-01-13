@@ -64,7 +64,7 @@ const images = [
     },
 ];
 
-const list = document.querySelector(".gallery");
+const gallery = document.querySelector(".gallery");
 
 function listTemplate(img) {
     return `<li class="gallery-item">
@@ -86,7 +86,7 @@ function addListTemplate(images) {
 
 function render() {
     const markup = addListTemplate(images);
-    list.innerHTML = markup; 
+    gallery.innerHTML = markup; 
     const galleryLinks = document.querySelectorAll(".gallery-link");
     galleryLinks.forEach(link => {
         link.addEventListener("click", function (e) {
@@ -96,3 +96,14 @@ function render() {
 }
 
 render();
+
+gallery.addEventListener("click", e => {
+    if (e.target === e.currentTarget) return;
+    const previewLink = e.target.getAttribute('data-source');
+    const instance = basicLightbox.create(`
+    <img src=${previewLink} width="1112" height="640">
+`)
+
+instance.show()
+})
+
