@@ -97,13 +97,28 @@ function render() {
 
 render();
 
+let modalOpen = false;
+
 gallery.addEventListener("click", e => {
     if (e.target === e.currentTarget) return;
     const previewLink = e.target.getAttribute('data-source');
     const instance = basicLightbox.create(`
-    <img src=${previewLink} width="1112" height="640">
-`)
+    <img src="${previewLink}" width="1112" height="640">
+`,
+{
+    onShow: instance => {
+        modalOpen = true;
+        document.addEventListener('keydown', closeModal);
+    },
+    onClose: instance => {
+        modalOpen = false;
+        document.removeEventListener('keydown', closeModal);
+    },
+})
+    function closeModal(e) {
+        if(modalOpen && e.code === 'Escape')
+        instance.close()
+    }
 
 instance.show()
 })
-
